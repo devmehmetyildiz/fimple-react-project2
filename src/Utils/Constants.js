@@ -1,6 +1,6 @@
 export const IntervalTypes = [
-    {label:"HAFTALIK" , value : 0},
-    {label:"AYLIK" , value : 1},
-    {label:"YILLIK" , value : 2}
+    { label: "HAFTALIK", value: 7 },
+    { label: "AYLIK", value: 30 },
+    { label: "YILLIK", value: 365 }
 ]
 

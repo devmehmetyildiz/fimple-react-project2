@@ -3,6 +3,7 @@ import "./Assets/Css/App.css"
 import Navbar from "./Pages/Common/Navbar"
 import Main from "./Pages/Main"
 import Create from "./Pages/Main/Create"
+import Edit from "./Pages/Main/Edit"
 import Detail from "./Pages/Main/Detail"
 import { withRouter } from 'react-router-dom';
 import { Switch, Route, Redirect } from 'react-router-dom';
@@ -31,7 +32,7 @@ function App() {
             <Switch>
               <Route exact path="/" component={Main} />
               <Route exact path="/Newdata" component={Create} />
-              <Route exact path="/Editdata/:DataID" component={Create} />
+              <Route exact path="/Edit/:DataID" component={Edit} />
               <Route exact path="/Details/:DataID" component={Detail} />
               <Redirect to="/" />
             </Switch>

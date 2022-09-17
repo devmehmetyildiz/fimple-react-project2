@@ -14,15 +14,15 @@ export function Index(props) {
         history.push("/Newdata")
     }
 
-    const HandleUpdateStatus = () => {
-
+    const HandleUpdateStatus = (e) => {
+        history.push(`/Edit/${e.target.id}`)
     }
 
 
 
     const HandleDetail = (e) => {
         setDetailobj(calcList.find(item => item.id == e.target.id))
-        history.push(`/Details/${Detailobj.id}`)
+        history.push(`/Details/${e.target.id}`)
     }
 
     return (
@@ -47,7 +47,8 @@ export function Index(props) {
                                     <th scope="col">Taksit sayısı</th>
                                     <th scope="col">Kâr oranı</th>
                                     <th scope="col">Taksit aralığı</th>
-                                    <th scope="col">Vergi oranı</th>
+                                    <th scope="col">KKDF Oranı</th>
+                                    <th scope="col">BSMV Oranı</th>
                                     <th scope="col">Düzenle</th>
                                     <th scope="col">Detay Görüntüle</th>
                                 </tr>
@@ -61,7 +62,8 @@ export function Index(props) {
                                         <td>{item.installments}</td>
                                         <td>{item.profitrate}</td>
                                         <td>{IntervalTypes.find(e => e.value === item.interval).label}</td>
-                                        <td>{item.taxrate}</td>
+                                        <td>{item.kkdf}</td>
+                                        <td>{item.bsmv}</td>
                                         <td>
                                             <button id={item.id} type="button" onClick={HandleUpdateStatus} className="btn btn-primary" >
                                                 Düzenle
