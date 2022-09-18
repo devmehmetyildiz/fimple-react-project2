@@ -2,13 +2,9 @@ import React, { useEffect } from 'react'
 import { MainContext, DetailContext, useContext } from "../../Context"
 import { IntervalTypes } from '../../Utils/Constants'
 import "../../Assets/Css/Main.css"
-export function Index(props) {
-    console.log("geldin")
+export function Index({history}) {
     const { Detailobj, setDetailobj } = useContext(DetailContext)
     const { calcList } = useContext(MainContext)
-    
-    
-    const { history } = props
 
     const HandleAddNew = () => {
         history.push("/Newdata")
@@ -17,8 +13,6 @@ export function Index(props) {
     const HandleUpdateStatus = (e) => {
         history.push(`/Edit/${e.target.id}`)
     }
-
-
 
     const HandleDetail = (e) => {
         setDetailobj(calcList.find(item => item.id == e.target.id))
@@ -78,7 +72,6 @@ export function Index(props) {
                                 })}
                             </tbody>
                         </table>
-
                     </div>
                 </div>
             </div>
