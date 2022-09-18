@@ -7,12 +7,16 @@ import { IntervalTypes } from '../../Utils/Constants'
 export function Create({ history }) {
     const { calcList, setcalcList } = useContext(MainContext)
 
-    const [showErrcreaditname, setshowErrcreaditname] = useState(false)
-    const [showErrcreditvalue, setshowErrcreditvalue] = useState(false)
-    const [showErrinstallments, setshowErrinstallments] = useState(false)
-    const [showErrprofitrate, setshowErrprofitrate] = useState(false)
-    const [showErrkkdf, setshowErrkkdf] = useState(false)
-    const [showErrbsmv, setshowErrbsmv] = useState(false)
+    const [errorStates, seterrorStates] = useState({
+        id: false,
+        creaditname: false,
+        creditvalue: false,
+        installments: false,
+        profitrate: false,
+        interval: false,
+        kkdf: false,
+        bsmv: false,
+    })
 
     const validationRefs = {
         id: useRef(),
@@ -51,56 +55,21 @@ export function Create({ history }) {
     }
 
     function CheckValidation() {
-        console.log('validationRefs["creaditname"].current.style: ', validationRefs["creaditname"].current.style);
         let isok = true
-        if (currentdata.creaditname === '') {
-            isok = false
-            validationRefs["creaditname"].current.style.borderColor = 'red'
-            setshowErrcreaditname(true)
-        } else {
-            setshowErrcreaditname(false)
-            validationRefs["creaditname"].current.style.borderColor = 'gray'
-        }
-        if (currentdata.creditvalue === 0) {
-            isok = false
-            validationRefs["creditvalue"].current.style.borderColor = 'red'
-            setshowErrcreditvalue(true)
-        } else {
-            setshowErrcreditvalue(false)
-            validationRefs["creditvalue"].current.style.borderColor = 'gray'
-        }
-        if (currentdata.installments === 0) {
-            isok = false
-            validationRefs["installments"].current.style.borderColor = 'red'
-            setshowErrinstallments(true)
-        } else {
-            setshowErrinstallments(false)
-            validationRefs["installments"].current.style.borderColor = 'gray'
-        }
-        if (currentdata.profitrate === 0) {
-            isok = false
-            validationRefs["profitrate"].current.style.borderColor = 'red'
-            setshowErrprofitrate(true)
-        } else {
-            setshowErrprofitrate(false)
-            validationRefs["profitrate"].current.style.borderColor = 'gray'
-        }
-        if (currentdata.kkdf === 0) {
-            isok = false
-            validationRefs["kkdf"].current.style.borderColor = 'red'
-            setshowErrkkdf(true)
-        } else {
-            setshowErrkkdf(false)
-            validationRefs["kkdf"].current.style.borderColor = 'gray'
-        }
-        if (currentdata.bsmv === 0) {
-            isok = false
-            validationRefs["bsmv"].current.style.borderColor = 'red'
-            setshowErrbsmv(true)
-        } else {
-            setshowErrbsmv(false)
-            validationRefs["bsmv"].current.style.borderColor = 'gray'
-        }
+        let _errorStates = errorStates
+        Object.keys(currentdata).forEach(element => {
+            if (element != "id" && element != "interval") {
+                if (currentdata[element] == 0 || (currentdata[element] === '' && element == "creaditname")) {
+                    isok = false
+                    validationRefs[element].current.style.borderColor = 'red'
+                    _errorStates[element] = true
+                } else {
+                    validationRefs[element].current.style.borderColor = '#ced4da'
+                    _errorStates[element] = false
+                }
+            }
+        });
+        seterrorStates({ ...errorStates, ..._errorStates })
         return isok
     }
 
@@ -133,7 +102,7 @@ export function Create({ history }) {
                             itemplaceholder="Hesaplama Adı"
                             itemchange={handleChange}
                             errmsg={"Lütfen İsim Giriniz"}
-                            errshow={showErrcreaditname}
+                            errshow={errorStates["creaditname"]}
                         />
                         <InputItem
                             ref={validationRefs["creditvalue"]}
@@ -144,7 +113,8 @@ export function Create({ history }) {
                             itemplaceholder="Kredi tutarı (Ana para) "
                             itemchange={handleChange}
                             errmsg={"Kredi Tutarı 0 olamaz"}
-                            errshow={showErrcreditvalue}
+                            errshow={errorStates["creditvalue"]}
+
                         />
                         <InputItem
                             ref={validationRefs["profitrate"]}
@@ -155,7 +125,7 @@ export function Create({ history }) {
                             itemplaceholder="Kâr oranı"
                             itemchange={handleChange}
                             errmsg={"Kar Oranı 0 olamaz"}
-                            errshow={showErrprofitrate}
+                            errshow={errorStates["profitrate"]}
                         />
                     </div>
                     <div className="col-6">
@@ -167,7 +137,7 @@ export function Create({ history }) {
                             itemtype="number"
                             itemplaceholder="Taksit sayısı"
                             itemchange={handleChange}
-                            errshow={showErrinstallments}
+                            errshow={errorStates["installments"]}
                             errmsg={"Taksit Tutarı 0 Olamaz"}
                         />
                         <SelectItem
@@ -186,7 +156,7 @@ export function Create({ history }) {
                                     itemtype="number"
                                     itemplaceholder="KKDF %"
                                     errmsg={"KKDF 0 olamaz"}
-                                    errshow={showErrkkdf}
+                                    errshow={errorStates["kkdf"]}
                                     itemchange={handleChange}
                                 />
                             </div>
@@ -199,12 +169,11 @@ export function Create({ history }) {
                                     itemtype="number"
                                     itemplaceholder="BSMV %"
                                     errmsg={"BSMV 0 olamaz"}
-                                    errshow={showErrbsmv}
+                                    errshow={errorStates["bsmv"]}
                                     itemchange={handleChange}
                                 />
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div className='row d-flex mt-5 pr-5 justify-content-end align-items-right'>
